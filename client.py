@@ -235,15 +235,19 @@ async def websocket_reading():
     except Exception as e:
         print('Exception. ws died: ', e)
 
-async def client():
-    await asyncio.wait([websocket_reading(), gui_application()])
+#async def client():
+#    await asyncio.wait([websocket_reading(), gui_application()])
 
-def main():
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(client())
-    loop.close()
+async def main():
+    task1 = asyncio.create_task(websocket_reading())
+    task2 = asyncio.create_task(gui_application())
+    await asyncio.wait([task1, task2])
+    #loop = asyncio.get_event_loop()
+    #loop.run_until_complete(client())
+    #loop.close()
 
 if __name__ == '__main__':
     print('started')
-    main()
+    #main()
+    asyncio.run(main())
     print('ended')
